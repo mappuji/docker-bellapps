@@ -1,0 +1,20 @@
+services:
+  couchdb:
+    expose:
+      - 5984
+    ports:
+      - "5984:5984"
+    image: klaemo/couchdb
+  db-init:
+    image: treehouses/bell:db-init-latest
+    depends_on:
+      - couchdb
+  bell:
+    image: treehouses/bell:latest
+    ports:
+      - "80:80"
+    environment:
+      - HOST=127.0.0.1
+    depends_on:
+      - couchdb
+version: "2"
