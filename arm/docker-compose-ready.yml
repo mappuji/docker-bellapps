@@ -1,0 +1,20 @@
+services:
+  couchdb:
+    expose:
+      - 5984
+    image: matthiasg/rpi-couchdb:1.6.1
+    ports:
+      - "5984:5984"
+  db-init:
+    image: treehouses/bell:rpi-db-init-latest
+    depends_on:
+      - couchdb
+  bell:
+    image: treehouses/bell:rpi-latest
+    ports:
+      - "8080:80"
+    environment:
+      - HOST=docker.ole.org
+    depends_on:
+      - couchdb
+version: "2"
